@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "tournament-dev",
+      "runtimeExecutable": "/usr/local/bin/node",
+      "runtimeArgs": ["node_modules/ts-node/dist/bin.js", "--project", "tsconfig.server.json", "server.ts"],
+      "port": 3000,
+      "autoPort": true
+    }
+  ]
+}

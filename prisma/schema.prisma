@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Tournament {
+  id             String           @id @default(cuid())
+  name           String
+  game           String
+  teamCount      Int
+  playersPerTeam Int
+  mapPool        String           @default("")
+  servers        String           @default("")
+  draftEnabled   Boolean          @default(true)
+  draftTimer     Int?
+  status         String           @default("WAITING")
+  hostToken      String           @unique
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  currentDraftTeamIndex Int    @default(0)
+  currentDraftRound     Int    @default(1)
+  draftDirection        String @default("forward")
+  draftMode             String @default("snake")
+  roundBestOf           String @default("")
+
+  teams        Team[]
+  participants Participant[]
+  matches      Match[]
+  draftPicks   DraftPick[]
+}
+
+model Team {
+  id           String   @id @default(cuid())
+  tournamentId String
+  name         String
+  seed         Int?
+  captainId    String?  @unique
+  createdAt    DateTime @default(now())
+
+  tournament     Tournament    @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  captain        Participant?  @relation("TeamCaptain", fields: [captainId], references: [id])
+  members        Participant[] @relation("TeamMembers")
+  matchesAsTeam1 Match[]       @relation("MatchTeam1")
+  matchesAsTeam2 Match[]       @relation("MatchTeam2")
+  matchesWon     Match[]       @relation("MatchWinner")
+  draftPicks     DraftPick[]
+}
+
+model Participant {
+  id           String   @id @default(cuid())
+  tournamentId String
+  name         String
+  role         String   @default("PARTICIPANT")
+  teamId       String?
+  createdAt    DateTime @default(now())
+
+  tournament Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  team       Team?      @relation("TeamMembers", fields: [teamId], references: [id])
+  captainOf  Team?      @relation("TeamCaptain")
+  draftPicks DraftPick[]
+}
+
+model Match {
+  id           String   @id @default(cuid())
+  tournamentId String
+  round        Int
+  matchIndex   Int
+  team1Id      String?
+  team2Id      String?
+  winnerId     String?
+  bestOf       Int     @default(1)
+  team1Score   Int     @default(0)
+  team2Score   Int     @default(0)
+  chosenMap    String?
+  chosenSide   String?
+  chosenServer String?
+  createdAt    DateTime @default(now())
+
+  tournament Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  team1      Team?      @relation("MatchTeam1", fields: [team1Id], references: [id])
+  team2      Team?      @relation("MatchTeam2", fields: [team2Id], references: [id])
+  winner     Team?      @relation("MatchWinner", fields: [winnerId], references: [id])
+}
+
+model DraftPick {
+  id            String   @id @default(cuid())
+  tournamentId  String
+  round         Int
+  pickNumber    Int
+  teamId        String
+  participantId String
+  createdAt     DateTime @default(now())
+
+  tournament  Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  team        Team        @relation(fields: [teamId], references: [id])
+  participant Participant @relation(fields: [participantId], references: [id])
+}

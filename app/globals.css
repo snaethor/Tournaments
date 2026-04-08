@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0d0d0f;
+  --surface: #16161a;
+  --surface-2: #1e1e24;
+  --surface-3: #26262e;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-2: rgba(255, 255, 255, 0.14);
+  --text: #f0f0f4;
+  --text-muted: rgba(240, 240, 244, 0.5);
+  --text-dim: rgba(240, 240, 244, 0.3);
+  --accent: #6366f1;
+  --accent-hover: #7c7ff5;
+  --accent-glow: rgba(99, 102, 241, 0.25);
+  --green: #22c55e;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --blue: #38bdf8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background: var(--bg); color-scheme: dark; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.card-2 {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: none;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 0 0 0 var(--accent-glow);
+}
+.btn-primary:not(:disabled):hover {
+  background: var(--accent-hover);
+  box-shadow: 0 0 0 6px var(--accent-glow);
+}
+
+.btn-secondary {
+  background: var(--surface-3);
+  color: var(--text);
+  border: 1px solid var(--border-2);
+}
+.btn-secondary:not(:disabled):hover { background: var(--surface-2); }
+
+.btn-danger {
+  background: var(--red);
+  color: white;
+}
+.btn-danger:not(:disabled):hover { filter: brightness(1.1); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.btn-ghost:not(:disabled):hover { color: var(--text); border-color: var(--border-2); }
+
+.btn-lg { padding: 0.75rem 1.5rem; font-size: 1rem; border-radius: 10px; }
+.btn-sm { padding: 0.3rem 0.75rem; font-size: 0.8rem; border-radius: 6px; }
+
+/* Form inputs */
+.input {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input:focus { border-color: var(--accent); }
+.input::placeholder { color: var(--text-dim); }
+
+/* Tabs */
+.tab-bar {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+
+.tab {
+  padding: 0.6rem 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); }
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.badge-purple { background: rgba(99,102,241,0.2); color: #a5b4fc; }
+.badge-green  { background: rgba(34,197,94,0.15); color: #4ade80; }
+.badge-yellow { background: rgba(245,158,11,0.15); color: #fbbf24; }
+.badge-red    { background: rgba(239,68,68,0.15); color: #f87171; }
+.badge-blue   { background: rgba(56,189,248,0.15); color: #7dd3fc; }
+.badge-gray   { background: rgba(255,255,255,0.07); color: var(--text-muted); }
+
+/* Toast */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--surface-3);
+  border: 1px solid var(--border-2);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  max-width: 320px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  animation: slideIn 0.25s ease;
+  pointer-events: auto;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Pulse animation for "on the clock" */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+  50% { box-shadow: 0 0 0 8px transparent; }
+}
+
+.pulse-glow { animation: pulse-glow 1.5s ease-in-out infinite; }
+
+/* Confetti celebration */
+@keyframes fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+.confetti-piece {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  top: -20px;
+  animation: fall linear forwards;
+  z-index: 9999;
+  pointer-events: none;
+}
