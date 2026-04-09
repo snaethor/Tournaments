@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import Database from "better-sqlite3";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -8,10 +7,10 @@ const globalForPrisma = globalThis as unknown as {
 
 // DATABASE_URL is expected to be a file path like "file:./dev.db" or "./dev.db"
 const dbUrl = process.env.DATABASE_URL ?? "file:./dev.db";
-const dbPath = dbUrl.startsWith("file:") ? dbUrl.slice(5) : dbUrl;
 
-const db = new Database(dbPath);
-const adapter = new PrismaBetterSqlite3(db);
+const adapter = new PrismaBetterSqlite3({
+  url: dbUrl,
+});
 
 export const prisma =
   globalForPrisma.prisma ??
