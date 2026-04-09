@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { serializeTournament } from "@/lib/serialize";
 
-export const fullInclude = {
+const fullInclude = {
   teams: { include: { members: true, captain: true } },
   participants: true,
   matches: {
